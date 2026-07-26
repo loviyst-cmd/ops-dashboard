@@ -1033,6 +1033,15 @@ function renderCur(){
   else if(state.view==='weekly')renderWeek();
   else renderMonth();
 }
+function switchToDaily(){
+  state.view='daily';
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.nav-tab[data-view="daily"]').classList.add('active');
+  document.getElementById('dailyView').classList.remove('hidden');
+  document.getElementById('weeklyView').classList.remove('active');
+  document.getElementById('monthlyView').classList.remove('active');
+  renderDaily();
+}
 
 // ========== 周视图 ==========
 function getWeekStart(d){const dt=new Date(d);const dy=dt.getDay();const diff=dt.getDate()-dy+(dy===0?-6:1);dt.setDate(diff);dt.setHours(0,0,0,0);return dt;}
@@ -1051,7 +1060,7 @@ function renderWeek(){
     c.innerHTML='<div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">完成'+dc+'/'+day.tasks.length+'</div>'+
       day.tasks.filter(t=>t.status==='done').map(t=>'<div class="week-task-mini" style="border-left-color:var(--type-'+t.type+');background:var(--type-'+t.type+'-l);">'+t.title+'</div>').join('')+
       (coins>0?'<div class="week-coin-badge">💰'+coins+'</div>':'');
-    c.addEventListener('click',()=>{state.currentDate=d;document.querySelector('.nav-tab[data-view="daily"]').click();});
+    c.addEventListener('click',()=>{state.currentDate=d;switchToDaily();});
     g.appendChild(c);
   }
   const wk=getWeekKey(state.currentDate),wr=state.weekReviews[wk]||{};
@@ -1097,7 +1106,7 @@ function makeMonthCell(d,tk,cur){
   let coins=0,dc=0,tc=0;
   if(state.days[key]){state.days[key].tasks.forEach(t=>{tc++;if(t.status==='done'){dc++;if(t.actualStart!=null&&t.actualEnd!=null)coins+=Math.max(1,Math.floor((t.actualEnd-t.actualStart)*COIN_RATE));}});}
   c.innerHTML='<div class="day-num">'+d.getDate()+'</div>'+(coins>0?'<div class="day-coins">💰'+coins+'</div>':'')+(dc>0?'<div class="day-progress">'+dc+'/'+tc+' ✓</div>':'');
-  c.addEventListener('click',()=>{state.currentDate=d;document.querySelector('.nav-tab[data-view="daily"]').click();});
+  c.addEventListener('click',()=>{state.currentDate=d;switchToDaily();});
   return c;
 }
 ['sales','profit','roi','cut','goal'].forEach(f=>{
