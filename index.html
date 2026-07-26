@@ -305,7 +305,7 @@
   .week-view.active, .month-view.active { display:block; }
 
   .week-grid {
-    display:grid; grid-template-columns:50px repeat(7,1fr); gap:4px;
+    display:grid; grid-template-columns:repeat(7,1fr); gap:4px;
     background:var(--card-bg); border-radius:12px; padding:16px; box-shadow:var(--shadow);
   }
   .week-day-header { text-align:center; font-size:13px; font-weight:600; padding:8px; border-radius:6px; background:var(--bg-start); color:var(--text-secondary); }
@@ -1042,7 +1042,6 @@ function renderWeek(){
   const tk=dateKey(new Date()),wd=['一','二','三','四','五','六','日'];
   document.getElementById('dateDisplay').textContent=(ws.getMonth()+1)+'月'+ws.getDate()+'日 - '+(we.getMonth()+1)+'月'+we.getDate()+'日';
   const g=document.getElementById('weekGrid');g.innerHTML='';
-  g.appendChild(document.createElement('div')).className='week-day-header';
   for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(d.getDate()+i);const h=document.createElement('div');h.className='week-day-header';if(dateKey(d)===tk)h.classList.add('today');h.innerHTML=wd[i]+'<br><span style="font-size:11px;opacity:.7">'+(d.getMonth()+1)+'/'+d.getDate()+'</span>';g.appendChild(h);}
   for(let i=0;i<7;i++){
     const d=new Date(ws);d.setDate(d.getDate()+i);const key=dateKey(d),day=getDay(key);
